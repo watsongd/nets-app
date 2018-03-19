@@ -7,12 +7,9 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
-    print("INITIAL")
     if request.method == "POST":
-        print("GETTING IN HERE")
         j = request.get_json()
         if 'paramDict' in j:
-            print("inside param dict")
             return jsonify(data=get_query_keys(convert_json(j)))
         elif 'dataDict' in j:
             return jsonify(data=get_query_values(convert_json(j)))
@@ -26,7 +23,6 @@ def get_x_axis_key(function_name):
             return key
 
 def convert_json(json):
-    print("inside cj")
     ret = {}
     if 'paramDict' in json:
         json = json['paramDict']
@@ -43,42 +39,32 @@ def convert_json(json):
                 ret['function'] = ob['value']
             else:
                 ret[ob['key']] = ob['value']
-    print("end cj")
     return ret
 
 def get_stat(json_lst, stat_name):
-    print("inside get stat")
     lst = list(json_lst)
     ret = []
     for ob in lst:
         ret.append(ob[stat_name])
-    print("end get stat")
     return ret
 
 def assign_submodule(params={}):
-    print("inside as")
     f = params['function']
     for key, lst in module_mappings.items():
         if f in lst:
             params['sub_module'] = key
-    print("end as")
     return params
 
 def get_query_keys(params={}):
-    print("3")
     params = assign_submodule(params)
-    print("4")
     return _get_query_results(params, flatten_keys=True)
 
 
 def get_query_values(params={}):
-    print("1")
     params = assign_submodule(params)
-    print("2")
     return _get_query_results(params, flatten_keys=False)
 
 def _get_query_results(params={}, flatten_keys=False):
-    print("inside underscore")
     if 'module' not in params or 'sub_module' not in params or 'function' not in params:
         return []
     if not flatten_keys and 'value_query' not in params:
@@ -113,17 +99,11 @@ def _get_query_results(params={}, flatten_keys=False):
         last_n_games = params['last_n_games'] if 'last_n_games' in params else '0'
         only_current = params['only_current'] if 'only_current' in params else 0
         just_id = params['just_id'] if 'just_id' in params else True
-        print("444")
         player_id = player.get_player(first, last_name=last, season=season, only_current=only_current, just_id=just_id)
-        print("333")
         if params['sub_module'] == 'player_career':
-            print("qqq")
             career = player.PlayerCareer(player_id)
-            print("www")
             if params['function'] == 'all_star_season_totals':
-                print("222")
                 temp = career.all_star_season_totals()
-                print("111")
             elif params['function'] == 'career_all_star_season_totals':
                 temp = career.career_all_star_season_totals()
             elif params['function'] == 'college_season_career_totals':
@@ -371,14 +351,12 @@ def _get_query_results(params={}, flatten_keys=False):
         # Failure case.
         pass
     if flatten_keys:
-        print("qwerty")
         return [l for l in list(set([el for o in temp for el in o.keys()])) if l not in to_remove]
     else:
-        print("uiop")
         return {
             'data': [o[params['value_query']] for o in temp],
             'labels': [o[get_x_axis_key(params['function'])] for o in temp]
         }
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
