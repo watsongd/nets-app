@@ -229,7 +229,7 @@ var Player = React.createClass({
             key:   "module",
             value: document.getElementsByClassName("ModuleSelect")[0].value
         });
-        fetch('https://nets-app-heroku.herokuapp.com:443/', {
+        fetch('/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -285,7 +285,7 @@ var Player = React.createClass({
         var randomColorGenerator = function () { 
             return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
         };
-        fetch('https://nets-app-heroku.herokuapp.com:443/', {
+        fetch('/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

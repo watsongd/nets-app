@@ -8,6 +8,7 @@ app = Flask(__name__)
 @app.route("/", methods=['GET', 'POST'])
 def main():
     if request.method == "POST":
+        print("GETTING IN HERE")
         j = request.get_json()
         if 'paramDict' in j:
             return jsonify(data=get_query_keys(convert_json(j)))
@@ -359,4 +360,4 @@ def _get_query_results(params={}, flatten_keys=False):
         }
 
 if __name__ == "__main__":
-    app.run(port=443)
+    app.run()
