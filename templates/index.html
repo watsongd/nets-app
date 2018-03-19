@@ -110,6 +110,7 @@ var Player = React.createClass({
         postSeasonRankings: false,
         postSeasonTotals: false,
         regularSeasonCareerTotals: false,
+        preseasonCareerTotals: false,
         fullName: "",
         currentlySelected: "",
         params: "",
@@ -120,7 +121,7 @@ var Player = React.createClass({
     },
 
     clear: function() {
-        this.setState({allStarSeasonTotals: false, regularSeasonRankings: false, regularSeasonTotals: false, collegeSeasonCareerTotals: false, collegeSeasonTotals: false, postSeasonCareerTotals: false, postSeasonRankings: false,postSeasonTotals: false, regularSeasonCareerTotals: false});
+        this.setState({allStarSeasonTotals: false, regularSeasonRankings: false, regularSeasonTotals: false, collegeSeasonCareerTotals: false, collegeSeasonTotals: false, postSeasonCareerTotals: false, postSeasonRankings: false,postSeasonTotals: false, regularSeasonCareerTotals: false, preseasonCareerTotals: false,});
     },
 
     renderASST: function() {
@@ -166,6 +167,11 @@ var Player = React.createClass({
     renderRSCT: function() {
         this.clear();
         this.setState({regularSeasonCareerTotals: true, currentlySelected: "regular_season_career_totals"});
+    },
+
+    renderPCT: function() {
+        this.clear();
+        this.setState({preseasonCareerTotals: true, currentlySelected: "preseason_career_totals"});
     },
 
     handleFunctionSelection: function(e) {
@@ -223,7 +229,7 @@ var Player = React.createClass({
             key:   "module",
             value: document.getElementsByClassName("ModuleSelect")[0].value
         });
-        fetch('https://nets-app-heroku.herokuapp.com:5000/', {
+        fetch('https://nets-app-heroku.herokuapp.com:443/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -279,7 +285,7 @@ var Player = React.createClass({
         var randomColorGenerator = function () { 
             return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
         };
-        fetch('https://nets-app-heroku.herokuapp.com:5000/', {
+        fetch('https://nets-app-heroku.herokuapp.com:443/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
