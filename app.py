@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
+    print("INITIAL")
     if request.method == "POST":
         print("GETTING IN HERE")
         j = request.get_json()
