@@ -1,42 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
- 
-<head>
-    <title>NBA Python Flask App</title>
- 
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>  
- 
-</head>
- 
-<body>
- 
-    <div class="container">
-        <div class="header">
-        </div>
- 
-        <div class="jumbotron text-center">
-            <h1>NBA Stats Comparison App</h1>
-            <p class="lead"></p>
-            <p><select name="" multiple>
-                <option value=""></option>
-                option
-            </select>
-            </p>
-        </div>
-        
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
-        </footer>
- 
-    </div>
-</body>
- Greetings, from Real Python!
-</html> -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -262,7 +223,7 @@ var Player = React.createClass({
             key:   "module",
             value: document.getElementsByClassName("ModuleSelect")[0].value
         });
-        fetch('http://localhost:5000/', {
+        fetch('/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -318,7 +279,7 @@ var Player = React.createClass({
         var randomColorGenerator = function () { 
             return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
         };
-        fetch('http://localhost:5000/', {
+        fetch('/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
