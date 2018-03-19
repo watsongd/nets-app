@@ -6,7 +6,7 @@ import html
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
-def main():
+def app():
     if request.method == "POST":
         j = request.get_json()
         if 'paramDict' in j:
