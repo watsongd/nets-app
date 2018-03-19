@@ -1,0 +1,489 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>NBA Python Flask App</title>
+ 
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>  
+ 
+</head>
+ 
+<body>
+ 
+    <div class="container">
+        <div class="header">
+        </div>
+ 
+        <div class="jumbotron text-center">
+            <h1>NBA Stats Comparison App</h1>
+            <p class="lead"></p>
+            <p><select name="" multiple>
+                <option value=""></option>
+                option
+            </select>
+            </p>
+        </div>
+        
+        <footer class="footer">
+            <p>&copy; Company 2015</p>
+        </footer>
+ 
+    </div>
+</body>
+ Greetings, from Real Python!
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>NBA Statistic Visuzalizer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body> 
+    <nav class="navbar navbar-light bg-primary">
+        <font size="6" color="white">
+            NBA Statistic Visuzalizer
+        </font>
+    </nav>
+    <div class="row">
+        <div class="col-9 ml-3" id="graph">
+              <canvas id="myChart" width="100%" height="50%"></canvas>
+        </div>
+        <div class="col-2 mr-3" id="content">
+            
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-12 text center mx-3">
+            <p>This is a small data visualization tool that uses the nba_py python library to gather data from the stats.nba.com endpoint 
+                and generate graphs based on the users selections and parameters using chart.js.  This could be expanded to display all of the data available on the stats.nba.com website one day.
+                <br/>
+            </p>    
+        </div>
+    </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+  <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+
+    var speedData = {
+      labels: [],
+      datasets: []
+    };
+   
+    var chartOptions = {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          boxWidth: 80,
+          fontColor: 'black'
+        }
+      }
+    };
+
+    var config = {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+    };
+
+    var line = new Chart(ctx, config);
+  </script>
+
+<script type="text/jsx">
+var OptionDropdown = React.createClass({
+    render: function() {
+        var dropdownInputs = this.props.list.map(function(list) {
+            return(<option value={list}>{list}</option>);
+        })
+        return(<div><label>Data Select</label><select onChange={this.props.onChange} className="form-control DataSelect" name="dataSelect">{dropdownInputs}</select></div>);
+    }
+});
+
+var Game = React.createClass({
+    render: function() {
+        return(
+            <div>
+                <div className="text-center">
+                    <font size="6">
+                        <b>Work In Progress!</b>
+                    </font>
+                </div>    
+            </div>
+        );
+    }
+});
+
+var Team = React.createClass({
+    render: function() {
+        return(
+            <div>
+                <div className="text-center">
+                    <font size="6">
+                        <b>Work In Progress!</b>
+                    </font>
+                </div>    
+            </div>
+        );
+    }
+});
+
+var Player = React.createClass({
+    getInitialState: function(){
+        return {
+        allStarSeasonTotals: false,
+        regularSeasonRankings: false,
+        regularSeasonTotals: false,
+        collegeSeasonCareerTotals: false,
+        collegeSeasonTotals: false,
+        postSeasonCareerTotals: false,
+        postSeasonRankings: false,
+        postSeasonTotals: false,
+        regularSeasonCareerTotals: false,
+        fullName: "",
+        currentlySelected: "",
+        params: "",
+        optionList: [],
+        paramSelected: false,
+        dataSelected: false
+        }
+    },
+
+    clear: function() {
+        this.setState({allStarSeasonTotals: false, regularSeasonRankings: false, regularSeasonTotals: false, collegeSeasonCareerTotals: false, collegeSeasonTotals: false, postSeasonCareerTotals: false, postSeasonRankings: false,postSeasonTotals: false, regularSeasonCareerTotals: false});
+    },
+
+    renderASST: function() {
+        this.clear();
+        this.setState({allStarSeasonTotals: true, currentlySelected: "all_star_season_totals"});
+    },
+
+    renderRSR: function() {
+        this.clear();
+        this.setState({regularSeasonRankings: true, currentlySelected: "regular_season_rankings"});
+    },
+
+    renderRST: function() {
+        this.clear();
+        this.setState({regularSeasonTotals: true, currentlySelected: "regular_season_totals"});
+    },
+
+    renderCSCT: function() {
+        this.clear();
+        this.setState({collegeSeasonCareerTotals: true, currentlySelected: "college_season_career_totals"});
+    },
+
+    renderCST: function() {
+        this.clear();
+        this.setState({collegeSeasonTotals: true, currentlySelected: "college_season_totals"});
+    },
+
+    renderPSCT: function() {
+        this.clear();
+        this.setState({postSeasonCareerTotals: true, currentlySelected: "post_season_career_totals"});
+    },
+
+    renderPSR: function() {
+        this.clear();
+        this.setState({postSeasonRankings: true, currentlySelected: "post_season_rankings"});
+    },
+
+    renderPST: function() {
+        this.clear();
+        this.setState({postSeasonTotals: true, currentlySelected: "post_season_totals"});
+    },
+
+    renderRSCT: function() {
+        this.clear();
+        this.setState({regularSeasonCareerTotals: true, currentlySelected: "regular_season_career_totals"});
+    },
+
+    handleFunctionSelection: function(e) {
+        this.setState({paramSelected: true});
+        if (e.target.value == "all_star_season_totals") {
+            this.renderASST();
+        }
+        if (e.target.value == "regular_season_rankings") {
+            this.renderRSR();
+        }
+        if (e.target.value == "regular_season_totals") {
+            this.renderRST();
+        }
+        if (e.target.value == "college_season_career_totals") {
+            this.renderCSCT();
+        }
+        if (e.target.value == "college_season_totals") {
+            this.renderCST();
+        }
+        if (e.target.value == "post_season_career_totals") {
+            this.renderPSCT();
+        }
+        if (e.target.value == "post_season_rankings") {
+            this.renderPSR();
+        }
+        if (e.target.value == "post_season_totals") {
+            this.renderPST();
+        }
+        if (e.target.value == "preseason_career_totals") {
+            this.renderPCT();
+        }
+        if (e.target.value == "preseason_season_totals") {
+            this.renderPST();
+        }
+        if (e.target.value == "regular_season_career_totals") {
+            this.renderRSCT();
+        }
+        var params = document.getElementsByClassName("parameterFormField");
+        var paramDict = [];
+        for (i = 0; i < params.length; i++) {
+            paramDict.push ({
+                key:   params[i].name,
+                value :params[i].value
+            });
+        }
+        paramDict.push({
+            key:  "fullName",
+            value: this.state.fullName
+        });
+        paramDict.push({
+            key:  "function",
+            value: e.target.value
+        });
+        paramDict.push({
+            key:   "module",
+            value: document.getElementsByClassName("ModuleSelect")[0].value
+        });
+        fetch('http://localhost:5000/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                paramDict
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            console.log('parsed json', json.data);
+            json.data.unshift("Select Data");
+            this.setState({optionList: json.data});
+        }.bind(this)).catch(function(ex) {
+            console.log('parsing failed', ex);
+        });
+    },
+
+    handleDataSelection: function(e) {
+        this.setState({dataSelected: true});
+    },
+
+    handleFullNameChange: function(e) {
+        this.setState({fullName: e.target.value});
+    },
+
+    handleSubmit: function(e) {
+        var params = document.getElementsByClassName("parameterFormField");
+        var dataDict = [];
+        for (i = 0; i < params.length; i++) {
+            dataDict.push ({
+                key:   params[i].name,
+                value :params[i].value
+            });
+        }
+        dataDict.push({
+            key:  "fullName",
+            value: this.state.fullName
+        });
+        dataDict.push({
+            key:  "function",
+            value: this.state.currentlySelected
+        });
+        dataDict.push({
+            key:   "module",
+            value: document.getElementsByClassName("ModuleSelect")[0].value
+        });
+        dataDict.push({
+            key:   "value_query",
+            value: document.getElementsByClassName("DataSelect")[0].value
+        });
+        var randomColorGenerator = function () { 
+            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+        };
+        fetch('http://localhost:5000/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                dataDict
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            console.log('parsed json', json.data);
+            var colorOfLine = randomColorGenerator();
+            var oldLabels = config.data.labels.slice();
+
+            json.data.labels.forEach(function (label) {
+                if (config.data.labels.indexOf(label) == -1) {
+                    config.data.labels.push(label);
+                }
+            });
+            config.data.labels.sort();
+
+            var newData = [];
+            var runningCounter = 0;
+            var bitMap = [];
+            for (i = 0; i < config.data.labels.length; i++) {
+                if (oldLabels.indexOf(config.data.labels[i]) == -1) {
+                    bitMap.push(0);
+                } else {
+                    bitMap.push(1);
+                }
+                if (json.data.labels.indexOf(config.data.labels[i]) == -1) {
+                    newData.push(null);
+                } else {
+                    newData.push(json.data.data[runningCounter]);
+                    runningCounter++;
+                }
+            }
+
+            for (i = 0; i < config.data.datasets.length; i++) {
+                var newDataArray = [];
+                var counter = 0;
+                var ds = config.data.datasets[i];
+                for (j = 0; j < config.data.labels.length; j++) {
+                    if (bitMap[j] == 0) {
+                        newDataArray.push(null);
+                    } else {
+                        newDataArray.push(ds.data[counter]);
+                        counter++;
+                    }
+                }
+                config.data.datasets[i].data = newDataArray;
+            }
+
+            var newDataSet= {
+                label: this.state.fullName + "-" + document.getElementsByClassName("DataSelect")[0].value,
+                data: newData,
+                backgroundColor: colorOfLine,
+                borderColor:     colorOfLine,
+                fill: false
+            };
+
+            config.data.datasets.push(newDataSet);
+            line.update();
+        }.bind(this)).catch(function(ex) {
+            console.log('parsing failed', ex);
+        });
+    },
+
+    render: function() { 
+        return (
+        <div>
+            <form>
+                <div className="form-group">
+                    <input className="form-control mb-3" name="fullName" placeholder="Enter Player First and Last Name" value={this.state.fullName} onChange={this.handleFullNameChange}/>
+                </div>
+                <div>
+                    <label>Metric</label>
+                    <select className="form-control" name="CurrentlySelected" onChange={this.handleFunctionSelection}>
+                        <option value="None">Select Metric</option>
+                        <option value="all_star_season_totals">All Star Season Totals</option>
+                        <option value="regular_season_rankings">Regular Season Rankings</option>
+                        <option value="regular_season_totals">Regular Season Totals</option>
+                        <option value="college_season_career_totals">College Season Career Totals</option>
+                        <option value="college_season_totals">College Season Totals</option>
+                        <option value="post_season_career_totals">Post Season Career Totals</option>
+                        <option value="post_season_rankings">Post Season Rankings</option>
+                        <option value="post_season_totals">Post Season Totals</option>
+                        <option value="preseason_career_totals">Preseason Career Totals</option>
+                        <option value="preseason_season_totals">Preseason Season Totals</option>
+                        <option value="regular_season_career_totals">Regular Season Career Totals</option>
+                    </select>
+                </div>
+                {this.state.paramSelected && <OptionDropdown list={this.state.optionList} onChange={this.handleDataSelection}/>}
+                {this.state.dataSelected && <button type="button" className="btn btn-primary mt-3" onClick={this.handleSubmit}>Submit</button>}
+            </form>
+        </div>)
+    }
+});
+var NewQuery = React.createClass({
+    getInitialState: function(){
+        return {
+        game: false,
+        player: false,
+        team: false
+        }
+    },
+
+    clear: function() {
+        this.setState({game: false, player: false, team: false});
+    },
+
+    handleSelectionChange: function(e) {
+        if (e.target.value == "player") {
+            this.renderPlayer()
+        }
+        if (e.target.value == "team") {
+            this.renderTeam()
+        }
+        if (e.target.value == "game") {
+            this.renderGame()
+        }
+    },
+
+    renderGame: function() {
+        this.clear();
+        this.setState({game: true});
+    },
+
+    renderPlayer: function() {
+        this.clear();
+        this.setState({player: true});
+    },
+
+    renderTeam: function() {
+        this.clear();
+        this.setState({team: true});
+    },
+
+    render: function() { 
+        return (
+            <div>
+                <form >
+                    <div className="form-group text-center">
+                        <label>Graph Selector</label>
+                        <select className="form-control ModuleSelect" onChange={this.handleSelectionChange}>
+                            <option value="None" >Select Filter</option>
+                            <option value="player" >Player</option>
+                            <option value="team">Team</option>
+                            <option value="game">Game</option>
+                        </select>
+                    </div>
+                </form>
+                {this.state.player && <Player player/>}
+                {this.state.team && <Team team/>}
+                {this.state.game && <Game game/>}
+            </div>        
+        )
+    }
+});
+ReactDOM.render(
+    React.createElement(NewQuery, null),
+    document.getElementById('content')
+  );
+</script>
+
+</body>
+</html>
